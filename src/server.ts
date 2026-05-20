@@ -7,6 +7,7 @@ import { AppDataSource } from './config/database';
 import { registerRoutes } from './routes/route';
 import { PORT, URL } from './config/app';
 import packageJson from '../package.json';
+import { startAllJobs } from './jobs';
 
 const app = express();
 
@@ -32,8 +33,10 @@ const startServer = async () => {
       console.log(`🌍 Ambiente: ${process.env.NODE_ENV}`);
       console.log(`📦 Versão: ${packageJson.version}`);
     });
+    // Inicia os jobs agendados
+    startAllJobs();
   } catch (error) {
-    console.error('❌ Erro ao iniciar servidor:', error);
+    console.error(' Erro ao iniciar servidor:', error);
     process.exit(1);
   }
 };
