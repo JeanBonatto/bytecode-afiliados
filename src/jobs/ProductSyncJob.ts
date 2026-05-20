@@ -11,7 +11,7 @@ const SYNC_KEYWORDS = [
 ];
 
 export const startProductSyncJob = (): void => {
-  const syncService new SyncService();
+  const syncService = new SyncService();
 
   // Roda toda hora às :00
   cron.schedule('0 * * * *', async () => {
