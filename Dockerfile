@@ -1,17 +1,14 @@
-FROM node:20-alpine
-
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Copiar package.json e instalar dependências
 COPY package*.json ./
-RUN npm ci --only=production
-
-# Copiar código fonte
+RUN npm ci
 COPY . .
-
-# Compilar TypeScript
 RUN npm run build
 
+FROM node:20-alpine AS runner
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY --from=builder /app/dist ./dist
 EXPOSE 3000
-
 CMD ["node", "dist/server.js"]
